@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kbstar.mapper.CartMapper">
+
+    <!-- 카트에 이미 담겨있는 상품을 똑같이 추가할 경우 수량 update. 없었다면 새로 insert   -->
+
+<!-- 카트에 담긴 상품별로 삭제하기  -->
+    <delete id="delete" parameterType="Integer">
+        DELETE
+        FROM cart
+        WHERE product_id=#{product_id}
+    </delete>
+
+    <!-- 본인의 장바구니만 조회해주기.
+        index.jsp 파일에서 경로를 이처럼 써주기. <a href="/cart?user_id=${loginuser.user_id}">-->
+    <select id="getmycart"  parameterType="String"  resultType="cart">
+        select c.user_id, c.product_id, i.product_name, i.product_imgname, c.cart_quantity, i.product_price, c.cart_date
+        from cart c,  product i, shopuser u
+        where  c.user_id = u.user_id
+          and  c.product_id = i.product_id
+          and  c.user_id = #{user_id}
+    </select>
+    <!-- 이미 담긴 상품이면 update. 없으면 insert   -->
+    <insert id="insert" parameterType="cart">
+        MERGE INTO cart
+            USING dual
+            ON (user_id = #{user_id} AND product_id = #{product_id})
+            WHEN NOT MATCHED THEN
+                INSERT (user_id, product_id, cart_quantity, cart_date)
+                    VALUES (#{user_id}, #{product_id}, #{cart_quantity}, SYSDATE)
+            WHEN MATCHED THEN
+                UPDATE SET
+                    cart_quantity = cart_quantity + #{cart_quantity}
+    </insert>
+</mapper>

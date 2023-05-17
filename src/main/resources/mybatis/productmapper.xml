@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kbstar.mapper.ProductMapper">
+
+
+    <!-- 참고. id 생성방법이 시퀀스일 경우 - item_seq.NEXTVAL | Date 사용할 경우 - SYSDATE   -->
+    <insert id="insert" parameterType="product">
+        INSERT INTO product VALUES (
+                                    product_seq.NEXTVAL,
+                                    #{product_name},
+                                    #{product_price},
+                                    SYSDATE,
+                                    #{product_imgname},
+                                    #{category_id}
+                                    )
+    </insert>
+    <update id="update" parameterType="product">
+        UPDATE product SET product_name=#{product_name},
+                           product_price=#{product_price},
+                           product_imgname=#{product_imgname}
+                     WHERE product_id=#{product_id}
+    </update>
+    <delete id="delete" parameterType="Integer">
+        DELETE FROM product
+               WHERE product_id=#{product_id}
+    </delete>
+    <select id="select" parameterType="Integer" resultType="product">
+        SELECT * FROM product
+                 WHERE product_id=#{product_id}
+    </select>
+<!--  이어링만 조회하기  -->
+    <select id="selecterg" parameterType="Integer" resultType="product">
+        select * from product
+        where category_id = 101
+    </select>
+    <!--  링만 조회하기  -->
+    <select id="selectring" parameterType="Integer" resultType="product">
+        select * from product
+        where category_id = 102
+    </select>
+    <!--  워치만 조회하기  -->
+    <select id="selectwch" parameterType="Integer" resultType="product">
+        select * from product
+        where category_id = 103
+    </select>
+    <!--  팔찌만 조회하기  -->
+    <select id="selectbracelet" parameterType="Integer" resultType="product">
+        select * from product
+        where category_id = 104
+    </select>
+    <!--  목걸이만 조회하기  -->
+    <select id="selectnecklace" parameterType="Integer" resultType="product">
+        select * from product
+        where category_id = 105
+    </select>
+    <!--  모던 악세서리 조회하기  -->
+    <select id="selectmodern" parameterType="Integer" resultType="product">
+        select * from product
+        where category_id = 200
+    </select>
+    <!--  카테고리별 조회하기 : 1. 캐쥬얼  -->
+    <select id="selectcasual" parameterType="Integer" resultType="product">
+        select * from product
+        where category_sub_id = 1
+    </select>
+    <!--  카테고리별 조회하기 : 2. 기프트 -->
+    <select id="selectgift" parameterType="Integer" resultType="product">
+        select * from product
+        where category_sub_id = 2
+    </select>
+    <!--  카테고리별 조회하기 : 3. 웨딩  -->
+    <select id="selectwedding" parameterType="Integer" resultType="product">
+        select * from product
+        where category_sub_id = 3
+    </select>
+
+    <select id="selectall" resultType="product">
+        SELECT * FROM product
+    </select>
+
+
+</mapper>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kbstar.mapper.UserMapper">
+    <select id="select" parameterType="String" resultType="user">
+        SELECT * FROM shopuser
+                 WHERE user_id=#{user_id}
+    </select>
+    <select id="selectall" resultType="user">
+        SELECT * FROM shopuser
+    </select>
+    <insert id="insert" parameterType="user">
+        INSERT INTO shopuser VALUES (#{user_id}, #{user_name}, #{user_gender}, #{user_pwd}, #{user_contact}, #{user_address}, SYSDATE, TO_DATE(#{user_birthday},'YYYY-MM-DD'), 0)
+    </insert>
+    <update id="update" parameterType="user">
+        UPDATE shopuser SET user_name=#{user_name}, user_gender=#{user_gender}, user_pwd=#{user_pwd}, user_contact=#{user_contact},
+                            user_address=#{user_address}, user_birthday=#{user_birthday} WHERE user_id=#{user_id}
+    </update>
+<!--    <update id="update" parameterType="user">-->
+<!--        UPDATE shopuser SET user_pwd=#{user_pwd}, user_name=#{user_name},-->
+<!--                            user_gender=#{user_gender}, user_contact=#{user_contact},-->
+<!--                             user_address=#{user_address}, user_birthday=#{user_birthday},-->
+<!--                             ,0 WHERE user_id=#{user_id}-->
+<!--    </update>-->
+    <delete id="delete" parameterType="String">
+        DELETE FROM shopuser WHERE user_id=#{user_id}
+    </delete>
+
+
+        </mapper>
